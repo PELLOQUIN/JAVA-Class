@@ -115,17 +115,18 @@ public class Users {
 		System.out.println(u1.isUserIn(r2));
 		
 		System.out.println(r1.getListAutorisation().get(0));
-		
+	
 		Monitors m1 = new Monitors("Ordinateur");
 		System.out.println(m1.canAccess(u1, a1));
-		System.out.println(m1.canAccess(u1, a2));
+		System.out.println(m1.canAccess(u1, a2));		
 		
-		
+			
 		u1.getban(r1);
-		m1.canAccess(u1, a1);
+			m1.canAccess(u1, a1);
 		System.out.println(u1.equals(u2));
 		
 	}
 	
 	
 }
+	
