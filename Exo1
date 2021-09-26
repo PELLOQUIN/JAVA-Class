@@ -1,0 +1,131 @@
+package cla;
+
+import java.util.ArrayList;
+
+public class Users {
+	private String name;
+	private String lastName;
+	private ArrayList <Roles> listRole;	
+	private ArrayList <Boolean>listBan;
+	
+	public Users(String name, String lastName) {
+		this.name = name;
+		this.lastName = lastName;
+		this.listRole = new ArrayList<Roles>();
+		this.listBan = new ArrayList<Boolean>();
+	}
+
+	//         _____________________GET AND SET___________________
+
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public String getLastName() {
+		return lastName;
+	}
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+	public ArrayList <Roles> getListRole() {
+		return listRole;
+	}
+	public void setListRole(ArrayList <Roles>listRole) {
+		this.listRole = listRole;
+	}
+	public ArrayList <Boolean> getListBan() {
+		return listBan;
+	}
+	public void addRole(Roles role) {
+		this.listRole.add(role);
+		this.listBan.add(false);
+	}
+	
+	public String toString()
+	{
+		return this.getName() + " "+ this.getLastName()+ ":" + this.getListRole();
+	}
+	
+	public void getban(Roles role) {
+		if (this.getListRole().contains(role) == false) {
+			System.out.println("Erreur : l utilisateur ne dispose pas de ce role");
+		}
+		else {
+			int i = this.getListRole().indexOf(role);
+			this.listBan.set(i, true);
+			System.out.println("l'utilisateur a été banni du role : " + role);
+		}
+	}
+	
+	public static String compare(Users u1, Users u2) {
+		String result = new String();
+		
+		if (u1 == u2) {
+			result = "Ce sont les mêmes objets.";
+		}
+		else {
+			if (u1.getName() == u2.getName()) {
+				result = "Ils ont le même prénom : " + u1.getName() + ". ";
+			}
+			if (u1.getLastName() == u2.getLastName()) {
+				result = result + "Ils ont le même nom de famille : " + u1.getLastName() + ".";
+			}
+		}
+		return result;
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		Users user=(Users)obj;
+		return user.getLastName()==this.lastName;
+	}
+
+	public boolean isUserIn(Roles role) {
+		boolean isUserIn = false;
+		for (int i = 0; i < this.getListRole().size(); i++) {
+			if (this.getListRole().get(i) == role) {
+				isUserIn = true;
+			}
+		}
+		return isUserIn;
+	} 
+	
+	//                  _______________MAIN________________                //
+	
+	public static void main(String[] args) {
+		Users u1 = new Users("Jean", "Delatour");
+		Users u2 = new Users("Jean","Delatour");
+		
+		Actions read = new Actions("read");
+		Ressources myFile = new Ressources("myFile.txt");
+		Autorisations a1 = new Autorisations(read,myFile);
+		Autorisations a2 = new Autorisations(read,myFile);
+		
+		Roles r1 = new Roles("Chef");
+		Roles r2 = new Roles("Sous-fifre");
+		r1.addAutorisation(a1);
+		u1.addRole(r1);
+		u2.addRole(r1);
+		System.out.println(u1);
+		
+		System.out.println(compare(u1,u2));
+		System.out.println(u1.isUserIn(r1));
+		System.out.println(u1.isUserIn(r2));
+		
+		System.out.println(r1.getListAutorisation().get(0));
+		
+		Monitors m1 = new Monitors("Ordinateur");
+		System.out.println(m1.canAccess(u1, a1));
+		System.out.println(m1.canAccess(u1, a2));
+		
+		
+		u1.getban(r1);
+		m1.canAccess(u1, a1);
+		System.out.println(u1.equals(u2));
+		
+	}
+	
+	
+}
